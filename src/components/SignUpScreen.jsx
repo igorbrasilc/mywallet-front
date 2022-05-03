@@ -5,23 +5,30 @@ import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import joi from 'joi';
 
-
-function SignInScreen() {
+function SignUpScreen() {
 
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
 
-    const signInSchema = joi.object({
+    const signUpSchema = joi.object({
+        name: joi.string().required(),
         email: joi.string().email({ tlds: {allow: false} }).required(),
-        password: joi.string().required()
+        password: joi.string().required(),
+        passwordConfirmation: joi.string().required()
     });
 
     async function onSubmit(obj) {
         try {
             setInputError(false);
-            await signInSchema.validateAsync(obj, { abortEarly: false});
+            await signUpSchema.validateAsync(obj, { abortEarly: false});
         } catch (e) {
+            // console.log(e.details.map(detail => detail.message));
             console.log('Erro na validação dos inputs', e);
+            setInputError(true);
+        }
+
+        if (obj.password !== obj.passwordConfirmation) {
+            console.log('As senhas precisam ser iguais!');
             setInputError(true);
         }
     }
@@ -30,19 +37,21 @@ function SignInScreen() {
         <LoginWrapper>
             <h1>MyWallet</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="email" placeholder="E-mail" {...register('email')} required />
-                <input type="password" placeholder="Senha" {...register('password')} required />
+                <input type="text" placeholder="Nome" {...register("name")} required />
+                <input type="email" placeholder="E-mail" {...register("email")} required />
+                <input type="password" placeholder="Senha" {...register("password")} required />
+                <input type="password" placeholder="Confirme a senha" {...register("passwordConfirmation")} required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
                 <button type="submit" disabled={false}>Entrar</button>
             </form>
-            <Link to='/sign-up'>
-                <p>Primeira vez? Cadastre-se</p>
+            <Link to='/'>
+                <p>Já tem uma conta? Entre agora!</p>
             </Link>
         </LoginWrapper>
     )
 }
 
-export default SignInScreen;
+export default SignUpScreen;
 
 const LoginWrapper = styled.main`
 
