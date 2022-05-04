@@ -10,6 +10,8 @@ import OutcomeScreen from './OutcomeScreen';
 import ResetCSS from '../assets/resetCss';
 import GlobalStyles from '../assets/GlobalStyles';
 
+// TODO: insert dotenv in the react project and loaders
+
 function App() {
     return (
         <>

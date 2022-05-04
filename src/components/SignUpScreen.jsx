@@ -1,12 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from 'styled-components';
 import React, {useState} from 'react';
+import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import joi from 'joi';
 
+// TODO: use dotenv on react
+
 function SignUpScreen() {
 
+    const navigate = useNavigate();
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
 
@@ -30,6 +34,16 @@ function SignUpScreen() {
         if (obj.password !== obj.passwordConfirmation) {
             console.log('As senhas precisam ser iguais!');
             setInputError(true);
+        }
+
+        try {
+            await axios.post('http://localhost:5000/sign-up', obj);
+            navigate('/');
+        } catch (e) {
+            console.log('Problema no post para o server', e);
+            alert(
+            "Deu erro no seu cadastro! Verifique os dados ou tente novamente mais tarde"
+            );
         }
     }
 

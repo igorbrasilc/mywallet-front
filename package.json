@@ -47,9 +47,11 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "dotenv": "^16.0.0",
+    "chalk": "^5.0.1",
+    "joi": "^17.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.30.0",
     "react-router-dom": "^6.3.0",
     "styled-components": "^5.3.5"
   }

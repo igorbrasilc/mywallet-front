@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from 'styled-components';
+import axios from 'axios';
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
@@ -8,6 +9,7 @@ import joi from 'joi';
 
 function SignInScreen() {
 
+    const navigate = useNavigate();
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
 
@@ -23,6 +25,16 @@ function SignInScreen() {
         } catch (e) {
             console.log('Erro na validação dos inputs', e);
             setInputError(true);
+        }
+
+        try {
+            await axios.post('http://localhost:5000/sign-in', obj);
+            navigate('/history');
+        } catch (e) {
+            console.log('Problema no post para o server', e);
+            alert(
+            "Deu erro no seu cadastro! Verifique os dados ou tente novamente mais tarde"
+            );
         }
     }
 
