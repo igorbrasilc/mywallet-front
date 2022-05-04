@@ -40,11 +40,9 @@ function SignUpScreen() {
             await axios.post('http://localhost:5000/sign-up', obj);
             navigate('/');
         } catch (e) {
-            console.log('Problema no post para o server', e.response.data);
+            console.log('Problema no post para o server', e);
             setInputError(true);
-            alert(
-            e.response.data
-            );
+            alert('Problema na criação do usuário');
         }
     }
 

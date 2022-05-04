@@ -27,15 +27,15 @@ function SignInScreen() {
             setInputError(true);
         }
 
-        try {
-            await axios.post('http://localhost:5000/sign-in', obj);
-            navigate('/history');
-        } catch (e) {
-            console.log('Problema no post para o server', e);
-            alert(
-            "Deu erro no seu cadastro! Verifique os dados ou tente novamente mais tarde"
-            );
-        }
+            const promise = axios.post('http://localhost:5000/sign-in', obj);
+            promise.then((response) => {
+                console.log(response);
+                navigate('/history');
+            })
+            .catch((e) => {
+                console.log('Problema no post para o server', e.data);
+                alert(e.data.response);
+            })
     }
 
     return (
