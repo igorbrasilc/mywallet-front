@@ -40,9 +40,10 @@ function SignUpScreen() {
             await axios.post('http://localhost:5000/sign-up', obj);
             navigate('/');
         } catch (e) {
-            console.log('Problema no post para o server', e);
+            console.log('Problema no post para o server', e.response.data);
+            setInputError(true);
             alert(
-            "Deu erro no seu cadastro! Verifique os dados ou tente novamente mais tarde"
+            e.response.data
             );
         }
     }
