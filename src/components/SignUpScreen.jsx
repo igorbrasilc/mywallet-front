@@ -13,6 +13,7 @@ function SignUpScreen() {
     const navigate = useNavigate();
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const signUpSchema = joi.object({
         name: joi.string().required(),
@@ -37,6 +38,7 @@ function SignUpScreen() {
         }
 
         try {
+            setLoading(true);
             await axios.post('http://localhost:5000/sign-up', obj);
             navigate('/');
         } catch (e) {
@@ -55,7 +57,7 @@ function SignUpScreen() {
                 <input type="password" placeholder="Senha" {...register("password")} required />
                 <input type="password" placeholder="Confirme a senha" {...register("passwordConfirmation")} required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
-                <button type="submit" disabled={false}>Entrar</button>
+                <button type="submit" disabled={loading}>Entrar</button>
             </form>
             <Link to='/'>
                 <p>Já tem uma conta? Entre agora!</p>

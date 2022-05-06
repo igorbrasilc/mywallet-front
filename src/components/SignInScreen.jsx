@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from 'styled-components';
 import axios from 'axios';
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import joi from 'joi';
+
+import UserContext from '../contexts/UserContext';
 
 
 function SignInScreen() {
@@ -12,6 +14,13 @@ function SignInScreen() {
     const navigate = useNavigate();
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    // TODO: use context api instead
+    const {user, setUser} = useContext(UserContext);
+
+    useEffect(() => {
+        if (user.token !== '') navigate('/history');
+    }, {});
 
     const signInSchema = joi.object({
         email: joi.string().email({ tlds: {allow: false} }).required(),
@@ -27,15 +36,20 @@ function SignInScreen() {
             setInputError(true);
         }
 
-            const promise = axios.post('http://localhost:5000/sign-in', obj);
-            promise.then((response) => {
-                console.log(response);
+        setLoading(true);
+
+        try {
+            await axios.post('http://localhost:5000/sign-in', obj)
+            .then(response => {
+
+                const {name, email, token, incomes, outcomes} = response.data;
+                setUser({...user, name, email, token, incomes, outcomes});
                 navigate('/history');
             })
-            .catch((e) => {
-                console.log('Problema no post para o server', e.data);
-                alert(e.data.response);
-            })
+        } catch (e) {
+            console.log('Problema no post para o server', e.data);
+            setLoading(false);
+        }
     }
 
     return (
@@ -45,7 +59,7 @@ function SignInScreen() {
                 <input type="email" placeholder="E-mail" {...register('email')} required />
                 <input type="password" placeholder="Senha" {...register('password')} required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
-                <button type="submit" disabled={false}>Entrar</button>
+                <button type="submit" disabled={loading}>Entrar</button>
             </form>
             <Link to='/sign-up'>
                 <p>Primeira vez? Cadastre-se</p>
