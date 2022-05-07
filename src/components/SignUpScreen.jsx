@@ -4,7 +4,6 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
-import joi from 'joi';
 
 // TODO: use dotenv on react
 
@@ -15,27 +14,7 @@ function SignUpScreen() {
     const [inputError, setInputError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const signUpSchema = joi.object({
-        name: joi.string().required(),
-        email: joi.string().email({ tlds: {allow: false} }).required(),
-        password: joi.string().required(),
-        passwordConfirmation: joi.string().required()
-    });
-
     async function onSubmit(obj) {
-        try {
-            setInputError(false);
-            await signUpSchema.validateAsync(obj, { abortEarly: false});
-        } catch (e) {
-            // console.log(e.details.map(detail => detail.message));
-            console.log('Erro na validação dos inputs', e);
-            setInputError(true);
-        }
-
-        if (obj.password !== obj.passwordConfirmation) {
-            console.log('As senhas precisam ser iguais!');
-            setInputError(true);
-        }
 
         try {
             setLoading(true);
@@ -44,7 +23,7 @@ function SignUpScreen() {
         } catch (e) {
             console.log('Problema no post para o server', e);
             setInputError(true);
-            alert('Problema na criação do usuário');
+            setLoading(false);
         }
     }
 
@@ -54,8 +33,9 @@ function SignUpScreen() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="text" placeholder="Nome" {...register("name")} required />
                 <input type="email" placeholder="E-mail" {...register("email")} required />
-                <input type="password" placeholder="Senha" {...register("password")} required />
-                <input type="password" placeholder="Confirme a senha" {...register("passwordConfirmation")} required />
+                <input type="password" placeholder="Senha" {...register("password")} pattern="^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$"  required />
+                <input type="password" placeholder="Confirme a senha"
+                {...register("passwordConfirmation")} title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
                 <button type="submit" disabled={loading}>Entrar</button>
             </form>
@@ -103,7 +83,7 @@ const LoginWrapper = styled.main`
             outline: none;
             }
 
-            &:disabled {
+            &::disabled {
                 background-color: grey;
             }
         }
@@ -119,6 +99,10 @@ const LoginWrapper = styled.main`
             &:hover {
                 cursor: pointer;
                 height: 58px;
+            }
+
+            &::disabled {
+                background-color: grey;
             }
         }
 

@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from 'styled-components';
 import axios from 'axios';
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
-import joi from 'joi';
 
 import UserContext from '../contexts/UserContext';
 
@@ -15,27 +14,9 @@ function SignInScreen() {
     const {register, handleSubmit} = useForm();
     const [inputError, setInputError] = useState(false);
     const [loading, setLoading] = useState(false);
-    // TODO: use context api instead
     const {user, setUser} = useContext(UserContext);
 
-    useEffect(() => {
-        if (user.token !== '') navigate('/history');
-    }, {});
-
-    const signInSchema = joi.object({
-        email: joi.string().email({ tlds: {allow: false} }).required(),
-        password: joi.string().required()
-    });
-
     async function onSubmit(obj) {
-        try {
-            setInputError(false);
-            await signInSchema.validateAsync(obj, { abortEarly: false});
-        } catch (e) {
-            console.log('Erro na validação dos inputs', e);
-            setInputError(true);
-        }
-
         setLoading(true);
 
         try {
@@ -44,11 +25,13 @@ function SignInScreen() {
 
                 const {name, email, token, incomes, outcomes} = response.data;
                 setUser({...user, name, email, token, incomes, outcomes});
+                setLoading(false);
                 navigate('/history');
             })
         } catch (e) {
             console.log('Problema no post para o server', e.data);
             setLoading(false);
+            setInputError(true);
         }
     }
 
@@ -57,7 +40,8 @@ function SignInScreen() {
             <h1>MyWallet</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="email" placeholder="E-mail" {...register('email')} required />
-                <input type="password" placeholder="Senha" {...register('password')} required />
+                <input type="password" placeholder="Senha" {...register('password')} pattern="^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$"
+                title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
                 <button type="submit" disabled={loading}>Entrar</button>
             </form>
@@ -121,6 +105,10 @@ const LoginWrapper = styled.main`
             &:hover {
                 cursor: pointer;
                 height: 58px;
+            }
+
+            &::disabled {
+                background-color: grey;
             }
         }
 
