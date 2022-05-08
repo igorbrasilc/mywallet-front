@@ -33,9 +33,10 @@ function SignUpScreen() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="text" placeholder="Nome" {...register("name")} required />
                 <input type="email" placeholder="E-mail" {...register("email")} required />
-                <input type="password" placeholder="Senha" {...register("password")} pattern="^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$"  required />
+                <input type="password" placeholder="Senha" {...register("password")} pattern="^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$" 
+                title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" required />
                 <input type="password" placeholder="Confirme a senha"
-                {...register("passwordConfirmation")} title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" required />
+                {...register("passwordConfirmation")} required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
                 <button type="submit" disabled={loading}>Entrar</button>
             </form>

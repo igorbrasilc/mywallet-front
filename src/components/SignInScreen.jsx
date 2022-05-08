@@ -23,8 +23,8 @@ function SignInScreen() {
             await axios.post('http://localhost:5000/sign-in', obj)
             .then(response => {
 
-                const {name, email, token, incomes, outcomes} = response.data;
-                setUser({...user, name, email, token, incomes, outcomes});
+                const {name, email, token, transactions} = response.data;
+                setUser({...user, name, email, token, transactions});
                 setLoading(false);
                 navigate('/history');
             })
