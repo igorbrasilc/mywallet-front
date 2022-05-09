@@ -12,11 +12,8 @@ import GlobalStyles from '../assets/GlobalStyles';
 import UserContext from '../contexts/UserContext';
 
 // TODO: insert dotenv in the react project and loaders
-// ajustar para os valores do history virem com virgula ao inves de ponto
 // ver por que não da pra colocar 0 no input do valor
 // fazer a tela do outcome
-// ver um jeito de atualizar o valor do sinal do total para mudar a classe
-// tirar os console log
 
 function App() {
 

@@ -2,7 +2,7 @@
 import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {useNavigate, Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {IoIosClose} from 'react-icons/io';
 import {useForm} from 'react-hook-form';
 

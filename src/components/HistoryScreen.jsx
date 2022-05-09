@@ -10,7 +10,6 @@ import UserContext from '../contexts/UserContext';
 function HistoryScreen() {
 
     const {user, setUser} = useContext(UserContext);
-    const [totalSign, setTotalSign] = useState('');
     const [transactions, setTransactions] = useState([]);
 
     const navigate = useNavigate();
@@ -45,20 +44,35 @@ function HistoryScreen() {
 
     }
 
-    const calculateTotal = () => {
+    function calculateTotal() {
         let total = 0;
+
         transactions.forEach(transaction => {
             if (transaction.type === 'income') total += transaction.value;
             else total -= transaction.value
-        })
-        
+        });
+
+        return Math.abs(total.toFixed(2)).toString().replace('.', ',');
+    }
+
+    function setSign() {
+
+        let total = 0;
+
+        transactions.forEach(transaction => {
+            if (transaction.type === 'income') total += transaction.value;
+            else total -= transaction.value
+        });
+
+        let sign = '';
+
         if (total > 0) {
-            setTotalSign('positive');
+            sign = 'positive';
         } else {
-            setTotalSign('negative');
+            sign = 'negative';
         }
 
-        return Math.abs(total.toFixed(2));
+        return sign;
     }
 
     function balanceHistory() {
@@ -72,14 +86,14 @@ function HistoryScreen() {
                                 <span>{transaction.date}</span>
                                 <p className="description">{transaction.description}</p>
                             </div>
-                            <p className={transaction.type}>{transaction.value}</p>
+                            <p className={transaction.type}>{transaction.value.toString().replace('.', ',')}</p>
                         </article>
                     )
                 })}
             </section>
             <footer>
                 <p className="text">SALDO</p>
-                <p className={`number ${totalSign}`}>{calculateTotal()}</p>
+                <p className={`number ${setSign()}`}>{`R$ ${  calculateTotal()}`}</p>
             </footer>
         </>    
         )
@@ -150,12 +164,12 @@ const ScreenWrapper = styled.main`
         width: 90%;
         background-color: var(--color-white);
         height: 65vh;
-        overflow-y: hidden;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         border-radius: 5px;
+        overflow: hidden;
         position: relative;
 
         .empty {
@@ -172,6 +186,8 @@ const ScreenWrapper = styled.main`
         position: absolute;
         top: 0;
         width: 100%;
+        height: 90%;
+        overflow-y: auto;
 
             article {
                 display: flex;
@@ -204,7 +220,7 @@ const ScreenWrapper = styled.main`
                 .outcome {
                     color: var(--color-red);
                 }
-            }
+            }  
         }
 
         footer {
