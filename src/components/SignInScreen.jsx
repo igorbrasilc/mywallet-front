@@ -39,9 +39,9 @@ function SignInScreen() {
         <LoginWrapper>
             <h1>MyWallet</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="email" placeholder="E-mail" {...register('email')} required />
+                <input type="email" placeholder="E-mail" {...register('email')} disabled={loading} required />
                 <input type="password" placeholder="Senha" {...register('password')} pattern="^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$"
-                title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" required />
+                title="Deve conter pelo menos 1 número, 1 letra maiúscula, 1 minúscula e no maximo 6 caracteres" disabled={loading} required />
                 {inputError === false ? <></> : <span>Verifique os dados!</span>}
                 <button type="submit" disabled={loading}>Entrar</button>
             </form>
@@ -90,7 +90,8 @@ const LoginWrapper = styled.main`
             }
 
             &:disabled {
-                background-color: grey;
+                background-color: var(--color-buttons);
+                opacity: var(--opacity-button-disabled);
             }
         }
 
@@ -107,8 +108,9 @@ const LoginWrapper = styled.main`
                 height: 58px;
             }
 
-            &::disabled {
+            &:disabled {
                 background-color: grey;
+                opacity: var(--opacity-button-disabled);
             }
         }
 

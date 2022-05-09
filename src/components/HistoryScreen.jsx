@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import React, {useContext, useEffect, useState} from 'react';
+import {useNavigate, Link} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -11,6 +12,8 @@ function HistoryScreen() {
     const {user, setUser} = useContext(UserContext);
     const [totalSign, setTotalSign] = useState('');
     const [transactions, setTransactions] = useState([]);
+
+    const navigate = useNavigate();
 
     const config = {
         headers: {
@@ -26,13 +29,29 @@ function HistoryScreen() {
         .catch(error => console.log(error.response));
     }, []);
 
-    function calculateTotal() {
+    function logOut() {
+        
+        // eslint-disable-next-line no-alert
+        const confirmation = confirm(`Deseja sair da sua conta, ${user.name}?`);
+
+        if (confirmation) {
+            setUser({...user,
+            name: '',
+            email: '',
+            token: '',
+            transactions: []});
+            navigate('/');
+        }
+
+    }
+
+    const calculateTotal = () => {
         let total = 0;
         transactions.forEach(transaction => {
             if (transaction.type === 'income') total += transaction.value;
             else total -= transaction.value
         })
-
+        
         if (total > 0) {
             setTotalSign('positive');
         } else {
@@ -70,20 +89,24 @@ function HistoryScreen() {
         <ScreenWrapper>
             <header>
                 <p>Olá, {user.name}</p>
-                <IoIosLogOut />
+                <IoIosLogOut onClick={() => logOut()}/>
             </header>
             <section className='board'>
                 {transactions.length === 0 ? <p className="empty">Não há registros de entrada ou saída</p> : balanceHistory()}
             </section>
             <section className='buttons'>
-                <article>
-                    <IoIosAddCircleOutline />
-                    <p>Nova entrada</p>
-                </article>
-                <article>
-                    <IoIosRemoveCircleOutline />
-                    <p>Nova saída</p>
-                </article>
+                <Link to="/income">
+                    <article>
+                        <IoIosAddCircleOutline />
+                        <p>Nova entrada</p>
+                    </article>
+                </Link>
+                <Link to="/outcome">
+                    <article>
+                        <IoIosRemoveCircleOutline />
+                        <p>Nova saída</p>
+                    </article>
+                </Link>
             </section>
         </ScreenWrapper>
     )
