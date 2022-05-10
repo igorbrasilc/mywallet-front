@@ -20,7 +20,7 @@ function SignInScreen() {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:5000/sign-in', obj)
+            await axios.post('https://mywallet-icb-api.herokuapp.com/sign-in', obj)
             .then(response => {
 
                 const {name, email, token, transactions} = response.data;

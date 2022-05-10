@@ -34,7 +34,7 @@ function IncomeScreen() {
         }
 
         try {
-            await axios.post('http://localhost:5000/new-income', objToPost, config)
+            await axios.post('https://mywallet-icb-api.herokuapp.com/new-income', objToPost, config)
             .then(response => {
 
                 const transactions = response.data;

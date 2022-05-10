@@ -18,7 +18,7 @@ function SignUpScreen() {
 
         try {
             setLoading(true);
-            await axios.post('http://localhost:5000/sign-up', obj);
+            await axios.post('https://mywallet-icb-api.herokuapp.com/sign-up', obj);
             navigate('/');
         } catch (e) {
             console.log('Problema no post para o server', e);

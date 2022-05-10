@@ -22,7 +22,7 @@ function HistoryScreen() {
     };
 
     useEffect(() => {
-        const promise = axios.get('http://localhost:5000/history', config);
+        const promise = axios.get('https://mywallet-icb-api.herokuapp.com/history', config);
         promise.then(response => {
             setTransactions(response.data.transactions);
         })
@@ -110,7 +110,7 @@ function HistoryScreen() {
         if (confirmation) {
 
             try {
-                await axios.delete(`http://localhost:5000/delete/${e.target.previousElementSibling.id}`, config)
+                await axios.delete(`https://mywallet-icb-api.herokuapp.com/delete/${e.target.previousElementSibling.id}`, config)
                 .then(response => {
                     setUser({...user, transactions: response.data})
                     setRender(!render);
