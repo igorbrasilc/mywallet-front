@@ -64,8 +64,9 @@ function IncomeScreen() {
                 <IoIosClose onClick={() => navigate('/history')}/>
             </header>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <ValueMasked callback={register} disabled={loading} />
-                <input type="text" placeholder="Descrição" {...register('description')} disabled={loading} required />
+                <ValueMasked callback={register} loading={loading} />
+                <input type="text" placeholder="Descrição" {...register('description')} disabled={loading}
+                title="Maximo de 20 caracteres" required />
                 <button type="submit" disabled={loading}>Salvar entrada</button>
             </form>
             {checkErrorOnPost()}

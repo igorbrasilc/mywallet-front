@@ -4,13 +4,14 @@ import {useNavigate, Link} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import { IoIosLogOut, IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
+import { IoIosLogOut, IoIosAddCircleOutline, IoIosRemoveCircleOutline, IoIosClose } from 'react-icons/io';
 import UserContext from '../contexts/UserContext';
 
 function HistoryScreen() {
 
     const {user, setUser} = useContext(UserContext);
     const [transactions, setTransactions] = useState([]);
+    const [render, setRender] = useState(false);
 
     const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ function HistoryScreen() {
             setTransactions(response.data.transactions);
         })
         .catch(error => console.log(error.response));
-    }, []);
+    }, [render]);
 
     function logOut() {
         
@@ -86,7 +87,10 @@ function HistoryScreen() {
                                 <span>{transaction.date}</span>
                                 <p className="description">{transaction.description}</p>
                             </div>
-                            <p className={transaction.type}>{transaction.value.toString().replace('.', ',')}</p>
+                            <div>
+                                <p className={transaction.type} id={transaction._id}>{transaction.value.toString().replace('.', ',')}</p>
+                                <IoIosClose onClick={(e) => deleteTransaction(e)} />
+                            </div>
                         </article>
                     )
                 })}
@@ -97,6 +101,26 @@ function HistoryScreen() {
             </footer>
         </>    
         )
+    }
+
+    async function deleteTransaction(e) {
+
+        const confirmation = confirm("Deseja deletar esta transação?");
+
+        if (confirmation) {
+
+            try {
+                await axios.delete(`http://localhost:5000/delete/${e.target.previousElementSibling.id}`, config)
+                .then(response => {
+                    setUser({...user, transactions: response.data})
+                    setRender(!render);
+                }
+                )
+            } catch (error) {
+                console.log(error.response);
+                alert('Não foi possível deletar a transação')
+            }
+        }
     }
 
     return (
@@ -202,6 +226,8 @@ const ScreenWrapper = styled.main`
     
                 div {
                     display: flex;
+                    align-items: center;
+
                     
                     span {
                         margin-right: 5px;
@@ -210,11 +236,21 @@ const ScreenWrapper = styled.main`
     
                     .description {
                         color: var(--color-black);
+                        word-wrap: break-word;
+                    }
+
+                    svg {
+                        color: #C6C6C6;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
     
                 .income {
                     color: var(--color-green);
+                    margin-left: 5px;
                 }
     
                 .outcome {

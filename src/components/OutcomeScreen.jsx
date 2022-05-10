@@ -64,8 +64,9 @@ function OutcomeScreen() {
                 <IoIosClose onClick={() => navigate('/history')}/>
             </header>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <ValueMasked callback={register} disabled={loading} />
-                <input type="text" placeholder="Descrição" {...register('description')} disabled={loading} required />
+                <ValueMasked callback={register} loading={loading} />
+                <input type="text" placeholder="Descrição" {...register('description')}
+                title="Maximo de 20 caracteres" disabled={loading} required />
                 <button type="submit" disabled={loading}>Salvar saída</button>
             </form>
             {checkErrorOnPost()}

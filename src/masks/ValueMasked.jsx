@@ -2,10 +2,8 @@
 import React from 'react';
 import CurrencyInput from 'react-currency-masked-input'
 
-// const regex = "^\d*\.?\d{1,2}$";
-
-export default function ValueMasked({callback}) {
+export default function ValueMasked({callback, loading}) {
     return (
-        <CurrencyInput {...callback('value')} placeholder="Valor" separator="," required />
+        <CurrencyInput {...callback('value')} placeholder="Valor" disabled={loading} required />
     )
 }

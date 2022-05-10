@@ -12,8 +12,6 @@ import GlobalStyles from '../assets/GlobalStyles';
 import UserContext from '../contexts/UserContext';
 
 // TODO: insert dotenv in the react project and loaders
-// ver por que não da pra colocar 0 no input do valor
-// fazer a tela do outcome
 
 function App() {
 
