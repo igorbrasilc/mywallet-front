@@ -16,7 +16,7 @@
 
 ##  :clipboard: Description
 
-The MyWallet application is a simple full stack project developed in a couple days, despite the simplicity, it has a very direct pourpose. You can register incomes and outcomes in your user page (data encrypted in a MongoDB database), they are kept organized by date and you get the balance of it in a simples interface! 
+The MyWallet application is a simple full stack project developed in a couple days, despite the simplicity, it has a very direct pourpose. You can register incomes and outcomes in your user page (data encrypted in a MongoDB database), they are kept organized by date and you get the balance of it in a simple interface! 
 ***
 
 ## :computer:	 Technologies
@@ -36,24 +36,24 @@ The MyWallet application is a simple full stack project developed in a couple da
 </p>
 
 
-## 🏁 Rodando a aplicação
+## 🏁 Running the application
 
 
-Primeiro, faça o clone desse repositório na sua maquina:
+First, clone the repo into your machine:
 
 ```
 git clone https://github.com/igorbrasilc/mywallet-front.git
 ```
 
-Depois, dentro da pasta, rode o seguinte comando para instalar as dependencias.
+After, inside the folder where the repo was clonned, run the following command to install dependencies:
 
 ```
 npm install
 ```
 
-Finalizado o processo, é só inicializar o servidor
+After that, you can run the script with:
 ```
 npm start
 ```
 
-:stop_sign: Não esqueça de repetir os passos acima com o [repositório](https://github.com/igorbrasilc/mywallet-back.git) que contem o backend da aplicação, para testar o projeto por completo.
+:stop_sign: Don't forget to run the steps above with the [repositório](https://github.com/igorbrasilc/mywallet-back.git), which contains the backend of this app, so you can enjoy the project as a whole.
